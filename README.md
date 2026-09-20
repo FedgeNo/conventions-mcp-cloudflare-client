@@ -22,8 +22,12 @@ Configure the remote MCP client with:
 
 ```toml
 url = "https://conventions-mcp-cloudflare.fedge-no.workers.dev/mcp"
-http_headers_helper = "conventions-mcp-cloudflare cloudflare-project-headers"
+http_headers_helper = "conventions-mcp-cloudflare cloudflare-headers"
 ```
 
 The helper sends the current working directory and machine hostname as
 `X-Conventions-Project` and `X-Conventions-Machine`.
+
+The combined helper also supplies the bearer token. Its default token file is
+`~/.config/conventions-mcp-cloudflare/token`; set
+`CONVENTIONS_MCP_AUTH_TOKEN_FILE` to use another private file.
