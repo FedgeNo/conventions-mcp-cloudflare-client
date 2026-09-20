@@ -1,0 +1,16 @@
+{
+  "name": "conventions-mcp-cloudflare-client",
+  "version": "0.1.0",
+  "private": false,
+  "type": "module",
+  "description": "Local hooks and project-header helper for the Cloudflare-hosted Conventions MCP server.",
+  "bin": {
+    "conventions-mcp-cloudflare": "client/cli.js"
+  },
+  "scripts": {
+    "test": "vitest run"
+  },
+  "devDependencies": {
+    "vitest": "latest"
+  }
+}
