@@ -1,9 +1,9 @@
 # conventions-mcp-cloudflare-client
 
-Local client integration for the Cloudflare-hosted Conventions MCP server.
+Local client application for the Cloudflare-hosted Conventions MCP server.
 
-This repository is intentionally separate from the Worker and does not alter
-the original local Conventions MCP hooks.
+This is the client half of the standalone Cloudflare implementation. It is
+used with that Worker, not together with the separate local SQLite server.
 
 ## Install
 
