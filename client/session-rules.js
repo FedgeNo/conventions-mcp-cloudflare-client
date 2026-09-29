@@ -17,7 +17,7 @@ process.stdin.on('end', () => {
     process.stdout.write(JSON.stringify({
         hookSpecificOutput: {
             hookEventName: 'SessionStart',
-            additionalContext: 'Before your first tool call in this session, call the Cloudflare Conventions MCP server\'s list_rules tool once to load this project\'s standing conventions. Do not call it again unless context has been reset.',
+            additionalContext: 'Call the Cloudflare Conventions MCP server\'s list_rules before any other tool; repeat only after context reset. Do only explicitly authorized work. Suggest other work and wait for permission before doing it.',
         },
     }));
 });
