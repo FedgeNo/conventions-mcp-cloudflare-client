@@ -20,17 +20,25 @@ git clone https://github.com/FedgeNo/conventions-mcp-cloudflare-client.git
 cd conventions-mcp-cloudflare-client
 npm ci
 npm install -g .
-conventions-mcp-cloudflare cloudflare-headers
+conventions-mcp-cloudflare cloudflare-project-headers
 ```
 
-The last command should print JSON with `Authorization`,
-`X-Conventions-Project`, and `X-Conventions-Machine` keys. Treat that output
-as a secret: it contains the bearer token. If it reports a missing token
-file, complete the server guide's token step first.
+The last command prints only project and machine headers; it does not read
+or print your token. Run it from a project directory to check the scope.
+Use a Node.js release supported by your installed dependencies and an npm
+prefix writable by your user so the global install does not need root.
+The CLI must also be on the PATH inherited by Codex or Claude Code.
+
+Complete the server guide's token step before connecting. The configured
+`cloudflare-headers` helper reads the private token file and adds authorization
+automatically; do not paste its output into issues, logs, or tracked files.
 
 Replace `YOUR_WORKER_HOSTNAME` in the examples below with the hostname from
 the URL printed by `wrangler deploy` (without `https://` or a trailing slash).
 The MCP endpoint is `https://YOUR_WORKER_HOSTNAME/mcp`.
+There is no shared hosted service or built-in maintainer endpoint: use your
+own deployment URL and token. Generic home-relative paths in this guide are
+configuration locations for the person installing the client.
 
 ## Codex
 
@@ -78,3 +86,22 @@ for the current project. Ask the agent to save a durable rule with
 `search_thoughts`. The hooks request a fresh `list_rules` call after a
 context reset. The client stores only a temporary per-session marker that
 the call was made; the rules themselves remain in D1.
+
+## Verify And Troubleshoot
+
+After restarting your agent, confirm the server is connected and ask it to
+call `list_rules`. A new database should report that no rules are stored.
+Save a project-scoped rule only from the intended project directory.
+Project scope includes both hostname and absolute directory, so moving the
+checkout or using another machine creates a different scope. These values
+are sent to your Worker; they are not credentials or access-control boundaries.
+
+- HTTP 401: the helper's token is missing from the request or does not match
+  the Worker's `MCP_AUTH_TOKEN`.
+- HTTP 503: the Worker has no nonempty `MCP_AUTH_TOKEN`; finish server setup.
+- Missing or empty token file: create or securely copy the deployment's token,
+  or set `CONVENTIONS_MCP_AUTH_TOKEN_FILE` in the agent's environment.
+- Helper not found: check the agent's PATH and restart it after installation.
+
+Anyone with the deployment token can access and modify its rules. Do not
+share a deployment between people who need isolated data.
